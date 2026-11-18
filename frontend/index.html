@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendSmart | Personal Finance Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- AUTHENTICATION -->
+    <section id="authView" class="auth-container">
+        <div class="auth-card">
+
+            <div class="brand">
+                <i class="fa-solid fa-wallet"></i>
+                <h1>SpendSmart</h1>
+            </div>
+
+            <p class="auth-subtitle">
+                Manage your money. Build better habits.
+            </p>
+
+            <!-- LOGIN -->
+            <div id="loginSection">
+                <h2>Welcome Back!</h2>
+                <p>Login to access your dashboard.</p>
+
+                <form id="loginForm">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail"
+                           placeholder="Enter your email" required>
+
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword"
+                           placeholder="Enter your password" required>
+
+                    <button type="submit" class="primary-btn">
+                        Login
+                    </button>
+
+                    <p id="authMessage" class="message" aria-live="polite"></p>
+                </form>
+
+                <p class="switch-text">
+                    Don't have an account?
+                    <a href="#" id="showRegister">Register</a>
+                </p>
+            </div>
+
+            <!-- REGISTER -->
+            <div id="registerSection" hidden>
+                <h2>Create Account</h2>
+                <p>Start managing your expenses today.</p>
+
+                <form id="registerForm">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName"
+                           placeholder="Enter your name" required>
+
+                    <label for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail"
+                           placeholder="Enter your email" required>
+
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword"
+                           placeholder="Create a password" required>
+
+                    <button type="submit" class="primary-btn">
+                        Create Account
+                    </button>
+
+                    <p id="registerMessage" class="message" aria-live="polite"></p>
+                </form>
+
+                <p class="switch-text">
+                    Already have an account?
+                    <a href="#" id="showLogin">Login</a>
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MAIN APPLICATION -->
+    <div id="appView" class="app-container" hidden>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-wallet"></i>
+                <span>SpendSmart</span>
+            </div>
+
+            <p class="menu-heading">MENU</p>
+
+            <nav class="sidebar-menu">
+                <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                    <i class="fa-solid fa-house"></i> Dashboard
+                </a>
+
+                <a href="#budget" class="nav-link" data-page="budget">
+                    <i class="fa-solid fa-piggy-bank"></i> My Budget
+                </a>
+
+                <a href="#transactions" class="nav-link" data-page="transactions">
+                    <i class="fa-solid fa-receipt"></i> Transactions
+                </a>
+
+                <a href="#analytics" class="nav-link" data-page="analytics">
+                    <i class="fa-solid fa-chart-pie"></i> Analytics
+                </a>
+
+                <a href="#notifications" class="nav-link" data-page="notifications">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                    <span class="notification-count" id="notificationCount">0</span>
+                </a>
+
+                <a href="#settings" class="nav-link" data-page="settings">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-tip">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <h4>Smart Tip</h4>
+                    <p>Track your expenses regularly to build better financial habits.</p>
+                </div>
+
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+            </div>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="menuToggle" class="icon-btn"
+                            aria-label="Toggle sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <div>
+                        <h2 id="pageTitle">Dashboard</h2>
+                        <p id="welcomeText">Welcome back!</p>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button id="themeToggle" class="icon-btn"
+                            aria-label="Toggle dark mode">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <button id="notificationBtn" class="icon-btn"
+                            aria-label="Notifications">
+                        <i class="fa-solid fa-bell"></i>
+                    </button>
+
+                    <div class="profile">
+                        <div class="profile-avatar">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div>
+                            <h4 id="userName">User</h4>
+                            <p>Personal Account</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD -->
+            <section id="dashboardPage" class="page-section">
+
+                
+<div class="page-heading">
+    <div>
+        <h2>Financial Overview</h2>
+        <p>Here's what's happening with your money.</p>
+    </div>
+
+    <div class="dashboard-actions">
+        <div class="month-selector">
+            <label for="trackingMonth">
+                <i class="fa-regular fa-calendar"></i>
+                Select Month
+            </label>
+            <input type="month" id="trackingMonth">
+        </div>
+
+        <button id="addExpenseBtn" class="primary-btn">
+            <i class="fa-solid fa-plus"></i> Add Expense
+        </button>
+    </div>
+</div>
+
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Total Budget</span>
+                            <div class="stat-icon purple">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                        </div>
+                        <h2 id="totalBudget">₹0.00</h2>
+                        <p>Monthly budget</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Total Spent</span>
+                            <div class="stat-icon pink">
+                                <i class="fa-solid fa-money-bill-transfer"></i>
+                            </div>
+                        </div>
+                        <h2 id="totalSpent">₹0.00</h2>
+                        <p>Expenses this month</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Remaining Budget</span>
+                            <div class="stat-icon green">
+                                <i class="fa-solid fa-piggy-bank"></i>
+                            </div>
+                        </div>
+                        <h2 id="remainingBudget">₹0.00</h2>
+                        <p>Available balance</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Budget Used</span>
+                            <div class="stat-icon orange">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <h2 id="budgetUsed">0%</h2>
+                        <p>Monthly usage</p>
+                    </div>
+                </div>
+
+                <!-- BUDGET PROGRESS -->
+                <div class="content-card budget-card">
+                    <div class="section-heading">
+                        <div>
+                            <h3>Monthly Budget Progress</h3>
+                            <p>Monitor your monthly spending limit.</p>
+                        </div>
+                        <button id="manageBudgetBtn" class="outline-btn">
+                            Manage Budget
+                        </button>
+                    </div>
+
+                    <div class="progress-info">
+                        <span>Budget usage</span>
+                        <strong id="budgetProgressText">0%</strong>
+                    </div>
+
+                    <div class="progress-track">
+                        <div id="budgetProgress" class="progress-fill"></div>
+                    </div>
+
+                    <p id="budgetMessage" class="budget-message">
+                        Your budget information will appear here.
+                    </p>
+                </div>
+
+                <!-- DASHBOARD CHARTS -->
+                <div class="charts-grid">
+                    <div class="content-card">
+                        <div class="section-heading">
+                            <div>
+                                <h3>Expenses by Category</h3>
+                                <p>Understand where your money goes.</p>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="section-heading">
+                            <div>
+                                <h3>Monthly Spending</h3>
+                                <p>Track your spending trends.</p>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENT TRANSACTIONS AND ALERTS -->
+                <div class="bottom-grid">
+                    <div class="content-card">
+                        <div class="section-heading">
+                            <div>
+                                <h3>Recent Transactions</h3>
+                                <p>Your latest expenses.</p>
+                            </div>
+                            <a href="#transactions" class="view-all"
+                               data-page="transactions">View All</a>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactionList">
+                                    <tr>
+                                        <td colspan="5" class="empty-state">
+                                            No transactions yet.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="section-heading">
+                            <div>
+                                <h3>Smart Alerts</h3>
+                                <p>Important spending updates.</p>
+                            </div>
+                        </div>
+                        <div id="alertsList">
+                            <p>No alerts right now.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- BUDGET PAGE -->
+            <section id="budgetPage" class="page-section" hidden>
+                <div class="page-heading">
+                    <div>
+                        <h2>My Budget</h2>
+                        <p>Create and manage your monthly budget.</p>
+                    </div>
+                    <button id="openBudgetBtn" class="primary-btn">
+                        <i class="fa-solid fa-plus"></i> Set Budget
+                    </button>
+                </div>
+
+                <div class="content-card">
+                    <h3>Budget Overview</h3>
+                    <p id="budgetOverview">
+                        Your budget details will appear here.
+                    </p>
+                </div>
+            </section>
+
+            <!-- TRANSACTIONS PAGE -->
+            <section id="transactionsPage" class="page-section" hidden>
+                <div class="page-heading">
+                    <div>
+                        <h2>Transactions</h2>
+                        <p>Manage all your expenses in one place.</p>
+                    </div>
+                    <button id="addExpenseBtn2" class="primary-btn">
+                        <i class="fa-solid fa-plus"></i> Add Expense
+                    </button>
+                </div>
+
+                <div class="content-card">
+                    <div class="filter-bar">
+                        <input type="search" id="searchExpense"
+                               placeholder="Search expenses...">
+
+                        <select id="filterCategory">
+                            <option value="">All Categories</option>
+                            <option value="Food">Food</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        <input type="date" id="filterDate">
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allTransactionList">
+                                <tr>
+                                    <td colspan="5" class="empty-state">
+                                        No transactions found.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button id="exportCsvBtn" class="outline-btn">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                </div>
+            </section>
+
+            <!-- ANALYTICS PAGE -->
+            <section id="analyticsPage" class="page-section" hidden>
+                <div class="page-heading">
+                    <div>
+                        <h2>Analytics</h2>
+                        <p>Understand your financial habits.</p>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="content-card">
+                        <h3>Category Analysis</h3>
+                        <div class="chart-container">
+                            <canvas id="analyticsCategoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <h3>Monthly Analysis</h3>
+                        <div class="chart-container">
+                            <canvas id="analyticsMonthlyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOTIFICATIONS PAGE -->
+            <section id="notificationsPage" class="page-section" hidden>
+                <div class="page-heading">
+                    <div>
+                        <h2>Notifications</h2>
+                        <p>Stay updated with your spending activity.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div id="notificationsList">
+                        <p>No new notifications.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SETTINGS PAGE -->
+            <section id="settingsPage" class="page-section" hidden>
+                <div class="page-heading">
+                    <div>
+                        <h2>Settings</h2>
+                        <p>Manage your SpendSmart preferences.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Appearance</h3>
+                    <p>Switch between light and dark mode using the theme button.</p>
+
+                    <hr>
+
+                    <h3>Account</h3>
+                    <p id="settingsUserEmail">
+                        Your account information will appear here.
+                    </p>
+
+                    <button id="settingsLogoutBtn" class="outline-btn">
+                        Logout
+                    </button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ADD / EDIT EXPENSE MODAL -->
+    <div id="expenseModal" class="modal" hidden>
+        <div class="modal-content">
+            <div class="modal-heading">
+                <h2 id="expenseModalTitle">Add New Expense</h2>
+                <button type="button" class="close-modal"
+                        id="closeExpenseModal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+
+            <form id="expenseForm">
+                <label for="expenseDescription">Expense Description</label>
+                <input type="text" id="expenseDescription"
+                       placeholder="e.g. Grocery shopping" required>
+
+                <label for="expenseAmount">Amount (₹)</label>
+                <input type="number" id="expenseAmount"
+                       placeholder="Enter amount" min="0.01"
+                       step="0.01" required>
+
+                <label for="expenseCategory">Category</label>
+                <select id="expenseCategory" required>
+                    <option value="">Select Category</option>
+                    <option value="Food">Food</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Bills">Bills</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="expenseDate">Date</label>
+                <input type="date" id="expenseDate" required>
+
+                <label for="expensePaymentMethod">Payment Method</label>
+                <select id="expensePaymentMethod">
+                    <option value="Cash">Cash</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+
+                <button type="submit" class="primary-btn">
+                    Save Expense
+                </button>
+
+                <p id="expenseMessage" class="message" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- BUDGET MODAL -->
+    <div id="budgetModal" class="modal" hidden>
+        <div class="modal-content">
+            <div class="modal-heading">
+                <h2>Set Monthly Budget</h2>
+                <button type="button" class="close-modal"
+                        id="closeBudgetModal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+
+            <form id="budgetForm">
+                <label for="budgetAmount">Monthly Budget Amount (₹)</label>
+                <input type="number" id="budgetAmount"
+                       placeholder="Enter your budget"
+                       min="1" step="0.01" required>
+
+                <label for="budgetMonth">Month</label>
+                <select id="budgetMonth" required>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+
+                <label for="budgetYear">Year</label>
+                <input type="number" id="budgetYear"
+                       min="2020" required>
+
+                <button type="submit" class="primary-btn">
+                    Save Budget
+                </button>
+
+                <p id="budgetFormMessage" class="message" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
