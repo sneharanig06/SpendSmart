@@ -4,8 +4,7 @@
    Month-wise tracking + FastAPI backend
 ===================================================== */
 
-const API_BASE_URL = "http://localhost:8000";
-
+const API_BASE_URL = "https://spendsmart-backend-5tdd.onrender.com";
 let token = localStorage.getItem("spendsmart_token");
 let currentUser = JSON.parse(
     localStorage.getItem("spendsmart_user") || "null"

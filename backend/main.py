@@ -30,6 +30,7 @@ app.add_middleware(
         "http://localhost:5500",
         "http://localhost:8080",
         "http://127.0.0.1:8080",
+        "https://spendsmart-frontend-df2c.onrender.com",
         "null"
     ],
     allow_credentials=True,
